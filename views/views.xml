@@ -1,0 +1,104 @@
+<odoo>
+  <data>
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="inmobiliaria.action_casa">
+      <field name="name">Casas</field>
+      <field name="res_model">inmobiliaria.casa</field>
+      <field name="view_mode">kanban,list,form,graph</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="inmobiliaria.action_propietario">
+      <field name="name">Propietario</field>
+      <field name="res_model">inmobiliaria.propietario</field>
+      <field name="view_mode">kanban,list,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Crea el primer propietario
+        </p>
+        <p>
+            Aquí podrás gestionar la información de contacto y las propiedades de tus clientes.
+        </p>
+    </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="inmobiliaria.action_cliente">
+      <field name="name">Cliente</field>
+      <field name="res_model">inmobiliaria.cliente</field>
+      <field name="view_mode">kanban,list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Registra tu primer cliente
+                </p>
+            </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="inmobiliaria.action_ubicacion">
+      <field name="name">Ubicacion</field>
+      <field name="res_model">inmobiliaria.ubicacion</field>
+      <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="inmobiliaria.action_operacion">
+      <field name="name">Operacion</field>
+      <field name="res_model">inmobiliaria.operacion</field>
+      <field name="view_mode">list,form,calendar,graph</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="inmobiliaria.action_visita">
+      <field name="name">Visita</field>
+      <field name="res_model">inmobiliaria.visita</field>
+      <field name="view_mode">list,form,calendar</field>
+      <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Planifica tu primera visita.
+                </p>
+                <p>
+                    Mantén un seguimiento de los inmuebles mostrados y el interés de tus clientes.
+                </p>
+            </field>
+    </record>
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="inmobiliaria.action_server">
+      <field name="name">inmobiliaria server</field>
+      <field name="model_id" ref="model_inmobiliaria_inmobiliaria"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+    <menuitem name="Inmobiliaria" id="inmobiliaria.menu_root"/>
+    <!-- menu categories -->
+    <menuitem name="Inmuebles" id="inmobiliaria.menu_1" parent="inmobiliaria.menu_root"
+              action="inmobiliaria.action_casa"/>
+    <menuitem name="Personas" id="inmobiliaria.menu_2" parent="inmobiliaria.menu_root"/>
+    <menuitem name="Ubicación" id="inmobiliaria.menu_3" parent="inmobiliaria.menu_root"
+              action="inmobiliaria.action_ubicacion"/>
+    <menuitem name="Gestiones" id="inmobiliaria.menu_4" parent="inmobiliaria.menu_root"/>
+    <!-- <menuitem name="Menu 2" id="inmobiliaria.menu_2" parent="inmobiliaria.menu_root"/> -->
+    <!-- actions -->
+    <!--<menuitem name="Casas" id="inmobiliaria.menu_1_list" parent="inmobiliaria.menu_1"
+              action="inmobiliaria.action_casa"/>-->
+    <menuitem name="Propietarios" id="inmobiliaria.menu_2_list" parent="inmobiliaria.menu_2"
+              action="inmobiliaria.action_propietario"/>
+    <menuitem name="Clientes" id="inmobiliaria.menu_3_list" parent="inmobiliaria.menu_2"
+              action="inmobiliaria.action_cliente"/>
+    <!--<menuitem name="Ubicaciones" id="inmobiliaria.menu_4_list" parent="inmobiliaria.menu_1"
+              action="inmobiliaria.action_ubicacion"/>-->
+    <menuitem name="Operaciones" id="inmobiliaria.menu_5_list" parent="inmobiliaria.menu_4"
+              action="inmobiliaria.action_operacion"/>
+    <menuitem name="Visitas" id="inmobiliaria.menu_6_list" parent="inmobiliaria.menu_4"
+              action="inmobiliaria.action_visita"/>
+    <!-- <menuitem name="Server to list" id="inmobiliaria" parent="inmobiliaria.menu_2"
+              action="inmobiliaria.action_server"/>
+-->
+  </data>
+</odoo>

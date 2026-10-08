@@ -1,0 +1,286 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inmobiliaria.casa_list_view">
+            <field name="name">inmobiliaria.casa.list</field>
+            <field name="model">inmobiliaria.casa</field>
+            <field name="arch" type="xml">
+                <list string="Inventario de Propiedades"
+                      decoration-success="valor &lt; 150000"
+                      decoration-info="tipo == '3'"
+                      decoration-danger="estado == False">
+                    <field name="name" string="REFERENCIA" decoration-bf="1"/>
+                    <field name="tipo" widget="badge"
+                          decoration-warning="tipo == '1'"
+                          decoration-primary="tipo == '2'"
+                          decoration-info="tipo == '3'"/>
+                    <field name="imagen" widget="image" string="IMAGEN" optional="show"/>
+                    <field name="ubicacion_id" string="UBICACIÓN" optional="show"/>
+                    <field name="valor" string="VALOR"/>
+                    <field name="numServicios" string="BAÑOS" optional="show"/>
+                    <field name="numHabitaciones" string="DORMITORIOS" optional="show"/>
+                    <field name="metros2" string="METROS²" optional="show"/>
+                    <field name="estado" string="ESTADO"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_inmobiliaria_casa_graph_pie" model="ir.ui.view">
+            <field name="name">inmobiliaria.casa.graph.pie</field>
+            <field name="model">inmobiliaria.casa</field>
+            <field name="arch" type="xml">
+                <graph string="Proporción por Tipo de Inmueble" type="pie">
+                    <field name="tipo"/> 
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="inmobiliaria.casa_form_view">
+            <field name="name">inmobiliaria.casa.form</field>
+            <field name="model">inmobiliaria.casa</field>
+            <field name="arch" type="xml">
+                <form string="Ficha de la Propiedad">
+                    <sheet>
+                        <field name="imagen" widget="image" class="oe_avatar" options='{"size": [128, 128]}'/>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="A00000"/></h1>
+                        </div>
+                        <group>
+                            <group string="Información Económica">
+                                <field name="valor" widget="monetary"/>
+                                <field name="estimacionValor" widget="monetary" decoration-bf="1"/>
+                                <field name="propietario_id" options="{'no_create': True}"/>
+                                <field name="ubicacion_id"/>
+                            </group>
+                            <group string="Características">
+                                <field name="tipo" widget="radio" options="{'horizontal': true}"/>
+                                <field name="metros2"/>
+                                <field name="numHabitaciones"/>
+                                <field name="numServicios"/>
+                                <field name="estado" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Descripción" name="notes">
+                                <field name="nota" placeholder="Añada observaciones sus Observaciones..."/>
+                            </page>
+                            <page string="Operaciones" name="operations">
+                                <field name="operacion_ids" readonly="1">
+                                    <list create="0" edit="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="fecha"/>
+                                        <field name="precioFinal" widget="monetary"/>
+                                        <field name="estado" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Registro de Visitas" name="visits">
+                                <field name="visita_ids" readonly="1">
+                                    <list create="0" edit="0" delete="0">
+                                        <field name="fecha"/>
+                                        <field name="name" string="CÓDIGO"/>
+                                        <field name="interes" widget="priority"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_inmobiliaria_casa_kanban" model="ir.ui.view">
+            <field name="name">inmobiliaria.casa.kanban</field>
+            <field name="model">inmobiliaria.casa</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="valor"/>
+                    <field name="tipo"/>
+                    <field name="numHabitaciones"/>
+                    <field name="numServicios"/>
+                    <field name="metros2"/>
+                    <field name="estado"/>
+                    <field name="imagen"/>
+                    <field name="ubicacion_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                <div class="o_kanban_image_fill_left d-none d-md-block" 
+                                    t-attf-style="background-image:url('#{kanban_image('inmobiliaria.casa', 'imagen', record.id.raw_value)}')">
+                                </div>
+                                
+                                <div class="oe_kanban_details">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title" style="font-size: 1.2em;">
+                                                <field name="name"/>
+                                            </strong>
+                                            <span class="badge rounded-pill float-end" t-attf-class="#{record.estado.raw_value ? 'text-bg-success' : 'text-bg-danger'}">
+                                                <t t-if="record.estado.raw_value">Buen Estado</t>
+                                                <t t-else="">Mal Estado</t>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-muted">
+                                        <i class="fa fa-map-marker"/> <field name="ubicacion_id"/>
+                                    </div>
+
+                                    <div class="mt-2" style="font-size: 0.9em;">
+                                        <span class="me-2"><i class="fa fa-bed"/> <field name="numHabitaciones"/> Hab.</span>
+                                        <span class="me-2"><i class="fa fa-bath"/> <field name="numServicios"/> Baños</span>
+                                        <span><i class="fa fa-arrows-alt"/> <field name="metros2"/> m²</span>
+                                    </div>
+
+                                    <div class="o_kanban_record_bottom mt-2">
+                                        <div class="oe_kanban_bottom_left">
+                                            <field name="tipo" widget="badge" 
+                                                decoration-warning="tipo == '1'" 
+                                                decoration-primary="tipo == '2'" 
+                                                decoration-info="tipo == '3'"/>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <strong class="text-primary" style="font-size: 1.1em;">
+                                                <field name="valor" widget="monetary"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
+
+
+        <record id="action_report_casa_detalle" model="ir.actions.report">
+            <field name="name">Ficha de la Propiedad</field>
+            <field name="model">inmobiliaria.casa</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">inmobiliaria.report_casa_template</field>
+            <field name="report_file">inmobiliaria.report_casa_template</field>
+            <field name="print_report_name">'Ficha_%s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_inmobiliaria_casa"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_casa_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="text-center">
+                                <h2 style="color: #2c3e50;">Ficha Descriptiva: <span t-field="o.name"/></h2>
+                            </div>
+                            <hr style="border-top: 2px solid #2c3e50;"/>
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <img t-if="o.imagen" t-att-src="image_data_uri(o.imagen)" 
+                                        style="max-height: 250px; width: 100%; object-fit: cover; border: 2px solid #eee; border-radius: 5px;"/>
+                                </div>
+
+                                <div class="col-8">
+                                    <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">Detalles Económicos</h4>
+                                    <table class="table table-sm borderless">
+                                        <tr>
+                                            <td><strong>Precio de Venta:</strong></td>
+                                            <td><span t-field="o.valor"/> €</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Estimación Mercado:</strong></td>
+                                            <td><span t-field="o.estimacionValor"/> €</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Tipo Inmueble:</strong></td>
+                                            <td><span t-field="o.tipo"/></td>
+                                        </tr>
+                                    </table>
+
+                                    <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">Características Físicas</h4>
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td><strong>Metros²:</strong> <span t-field="o.metros2"/></td>
+                                            <td><strong>Habitaciones:</strong> <span t-field="o.numHabitaciones"/></td>
+                                            <td><strong>Baños:</strong> <span t-field="o.numServicios"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <strong>Estado:</strong> 
+                                                <t t-if="o.estado">Buen Estado</t>
+                                                <t t-else="">Necesita Reforma</t>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <h4 style="background-color: #f8f9fa; padding: 5px;">Historial de Operaciones</h4>
+                                <t t-if="o.operacion_ids">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Referencia</th>
+                                                <th>Fecha</th>
+                                                <th>Tipo</th>
+                                                <th class="text-right">Precio Final</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="o.operacion_ids" t-as="op">
+                                                <td><span t-field="op.name"/></td>
+                                                <td><span t-field="op.fecha"/></td>
+                                                <td><span t-field="op.tipo"/></td>
+                                                <td class="text-right"><span t-field="op.precioFinal"/> €</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <p t-else="" class="text-muted small italic">No hay operaciones registradas aún.</p>
+                            </div>
+
+                            <div class="mt-4">
+                                <h4 style="background-color: #f8f9fa; padding: 5px;">Registro de Visitas</h4>
+                                <t t-if="o.visita_ids">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Código</th>
+                                                <th class="text-center">Interés</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="o.visita_ids" t-as="vis">
+                                                <td><span t-field="vis.fecha"/></td>
+                                                <td><span t-field="vis.name"/></td>
+                                                <td class="text-center">
+                                                    <t t-if="vis.interes == '1'">Bajo</t>
+                                                    <t t-if="vis.interes == '2'">Medio</t>
+                                                    <t t-if="vis.interes == '3'">Alto</t>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <p t-else="" class="text-muted small italic">No se han realizado visitas a esta propiedad.</p>
+                            </div>
+
+                            <div class="mt-4" t-if="o.nota">
+                                <h4 style="border-bottom: 1px solid #ddd;">Observaciones Adicionales</h4>
+                                <p t-field="o.nota" style="font-style: italic; color: #555;"/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

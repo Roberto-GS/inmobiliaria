@@ -1,0 +1,77 @@
+<odoo>
+  <data>
+    <record id="view_inmobiliaria_visita_list_pro" model="ir.ui.view">
+        <field name="name">inmobiliaria.visita.list</field>
+        <field name="model">inmobiliaria.visita</field>
+        <field name="arch" type="xml">
+            <list string="Registro de Visitas" 
+                  decoration-danger="interes == '1'" 
+                  decoration-warning="interes == '2'" 
+                  decoration-success="interes == '3'"
+                  sample="1">
+                
+                <field name="fecha" widget="date"/>
+                
+                <field name="name" string="Referencia" decoration-bf="1"/>
+                
+                <field name="casa_id" string="Inmueble"/>
+                
+                <field name="cliente_ids" widget="many2many_tags" string="Clientes"/>
+                
+                <field name="interes" 
+                      widget="badge" 
+                      decoration-danger="interes == '1'" 
+                      decoration-warning="interes == '2'" 
+                      decoration-success="interes == '3'"/>
+                
+                <field name="comentarios" string="Notas del Agente" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_inmobiliaria_visita_calendar" model="ir.ui.view">
+            <field name="name">inmobiliaria.visita.calendar</field>
+            <field name="model">inmobiliaria.visita</field>
+            <field name="arch" type="xml">
+                <calendar string="Agenda de Visitas" 
+                          date_start="fecha" 
+                          color="interes" 
+                          mode="month"
+                          quick_create="0"> <field name="name"/>
+                    <field name="casa_id"/>
+                    <field name="interes" filters="1"/>
+                </calendar>
+            </field>
+    </record>
+
+    <record id="view_inmobiliaria_visita_form" model="ir.ui.view">
+            <field name="name">inmobiliaria.visita.form</field>
+            <field name="model">inmobiliaria.visita</field>
+            <field name="arch" type="xml">
+                <form string="Registro de Visita">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Código de Visita"/>
+                            <h1>
+                                <field name="name" placeholder="V001"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Detalles de la Cita">
+                                <field name="fecha"/>
+                                <field name="casa_id" options="{'no_create': True, 'no_open': False}"/>
+                                <field name="interes" widget="priority"/>
+                            </group>
+                            <group string="Asistentes">
+                                <field name="cliente_ids" widget="many2many_tags" placeholder="Seleccione los clientes..."/>
+                            </group>
+                        </group>
+                        <group string="Observaciones">
+                            <field name="comentarios" placeholder="Describa la impresión del cliente, dudas planteadas, etc..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+      </record>
+  </data>
+</odoo>

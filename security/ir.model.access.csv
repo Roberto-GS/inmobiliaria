@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inmobiliaria_casa,inmobiliaria.casa,model_inmobiliaria_casa,base.group_user,1,1,1,1
+access_inmobiliaria_propietario,inmobiliaria.propietario,model_inmobiliaria_propietario,base.group_user,1,1,1,1
+access_inmobiliaria_cliente,inmobiliaria.cliente,model_inmobiliaria_cliente,base.group_user,1,1,1,1
+access_inmobiliaria_ubicacion,inmobiliaria.ubicacion,model_inmobiliaria_ubicacion,base.group_user,1,1,1,1
+access_inmobiliaria_operacion,inmobiliaria.operacion,model_inmobiliaria_operacion,base.group_user,1,1,1,1
+access_inmobiliaria_visita,inmobiliaria.visita,model_inmobiliaria_visita,base.group_user,1,1,1,1
